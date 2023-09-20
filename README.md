@@ -38,7 +38,8 @@ Language_AddKey(serbian, "INFO", "Ja sam novi mali peder\nvolim vas");
 
 ```
 
-Everytime a `SendClientMessage` was sent with this key as text, it will send the value.
+Everytime a `SendClientMessage` was sent with this key as text, it will send the value. This also goes for `GameTextForPlayer`, `SendPlayerMessageToPlayer` and soon, I hope for `ShowPlayerDialog`.
+No new send functions, only hooks.
 Full example:
 ```pawn
 
