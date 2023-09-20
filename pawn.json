@@ -1,0 +1,13 @@
+{
+	"user": "Mergevos",
+	"repo": "open-language",
+	"entry": "test.pwn",
+	"output": "test.amx",
+	"dependencies": [
+		"openmultiplayer/omp-stdlib",
+		"pawn-lang/samp-stdlib@open.mp",
+		"pawn-lang/pawn-stdlib@open.mp",
+		"IS4Code/PawnPlus:v1.4.2",
+		"pawn-lang/YSI-Includes@5.x"
+	]
+}
