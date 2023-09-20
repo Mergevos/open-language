@@ -1,5 +1,6 @@
 # language
 [![Mergevos](https://img.shields.io/badge/Mergevos-open--language-2f2f2f.svg?style=for-the-badge)](https://github.com/Mergevos/open-language)
+
 Minimalistic multi language library.
 
 ## Installation
