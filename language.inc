@@ -1,12 +1,17 @@
 #include <open.mp>
 
-#define PP_SYNTAX_ON_EXIT
-#define PP_SYNTAX_ON_INIT
+#if !defined PP_SYNTAX_ON_EXIT
+    #define PP_SYNTAX_ON_EXIT
+#endif
+
+#if !defined PP_SYNTAX_ON_INIT
+    #define PP_SYNTAX_ON_INIT
+#endif
 
 #include <PawnPlus>
 
-#include <YSI_Coding\y_hooks>
 #include <YSI_Coding\y_va>
+#include <YSI_Data\y_iterate>
 
 #if !defined MAX_LANGS
     #define MAX_LANGS 30
@@ -135,61 +140,123 @@ pawn_on_exit[lang]
 // --
 // Hooks
 // --
-hook function SendClientMessage(playerid, colour, const format[], OPEN_MP_TAGS: ...)
+
+//SendClientMessage
+stock __language_SendClientMessage(playerid, colour, const format[], OPEN_MP_TAGS: ...)
 {
     new Language: lang = Language_gsPlayer[playerid];
     if(map_has_str_key(Language_gsMap[_:lang], format))
     {
         new text[144];
         map_str_get_str(Language_gsMap[_:lang], format, text);
-        return continue(playerid, colour, text, ___(3));
+        return SendClientMessage(playerid, colour, text, ___(3));
     }
     else
     {
-        return continue(playerid, colour, format, ___(3));
+        return SendClientMessage(playerid, colour, format, ___(3));
     }
 }
 
-hook function SendPlayerMessageToPlayer(playerid, senderid, const format[], OPEN_MP_TAGS:...)
+#if defined _ALS_SendClientMessage
+    #undef SendClientMessage
+#else
+    #define _ALS_SendClientMessage
+#endif
+
+#define SendClientMessage __language_SendClientMessage
+
+//SendClientMessageToAll
+stock __language_SendClientMessageToAll(colour, const format[], OPEN_MP_TAGS: ...)
+{
+    foreach(new i : Player)
+    {
+        __language_SendClientMessage(i, colour, format, ___(2));
+    }
+}
+
+#if defined _ALS_SendClientMessageToAll
+    #undef SendClientMessageToAll
+#else
+    #define _ALS_SendClientMessageToAll
+#endif
+
+#define SendClientMessageToAll __language_SendClientMessageToAll
+
+// SendPlayerMessageToPlayer
+stock __language_SendPlayerMessageToPlayer(playerid, senderid, const format[], OPEN_MP_TAGS:...)
 {
     new Language: lang = Language_gsPlayer[playerid];
     if(map_has_str_key(Language_gsMap[_:lang], format))
     {
         new text[144];
         map_str_get_str(Language_gsMap[_:lang], format, text);
-        return continue(playerid, senderid, text, ___(3));
+        return SendPlayerMessageToPlayer(playerid, senderid, text, ___(3));
     }
     else
     {
-        return continue(playerid, senderid, format, ___(3));
+        return SendPlayerMessageToPlayer(playerid, senderid, format, ___(3));
     }
 }
 
-hook function GameTextForPlayer(playerid, const string[], time, style, OPEN_MP_TAGS: ...)
+#if defined _ALS_SendPlayerMessageToPlayer
+    #undef SendPlayerMessageToPlayer
+#else
+    #define _ALS_SendPlayerMessageToPlayer
+#endif
+
+#define SendPlayerMessageToPlayer __language_SendPlayerMessageToPlayer
+
+//GameTextForPlayer
+stock __language_GameTextForPlayer(playerid, const string[], time, style, OPEN_MP_TAGS: ...)
 {
     new Language: lang = Language_gsPlayer[playerid];
     if(map_has_str_key(Language_gsMap[_:lang], string))
     {
         new text[144];
         map_str_get_str(Language_gsMap[_:lang], string, text);
-        return continue(playerid, text, time, style, ___(4));
+        return GameTextForPlayer(playerid, text, time, style, ___(4));
     }
     else
     {
-        return continue(playerid, string, time, style, ___(4));
+        return GameTextForPlayer(playerid, string, time, style, ___(4));
     }
 }
 
-// I'm still figuring out how to make dialog language available
-/*
-hook function ShowPlayerDialog(playerid, dialogid, DIALOG_STYLE: style, const caption[], const info[], const button1[], const button2[])
+#if defined _ALS_GameTextForPlayer
+    #undef GameTextForPlayer
+#else
+    #define _ALS_GameTextForPlayer
+#endif
+
+#define GameTextForPlayer __language_GameTextForPlayer
+
+//GameTextForAll
+stock __language_GameTextForAll(const string[], time, style, OPEN_MP_TAGS: ...)
+{
+    foreach(new i : Player)
+    {
+        __language_GameTextForPlayer(i, string, time, style, ___(3));
+    }
+}
+
+#if defined _ALS_GameTextForAll
+    #undef GameTextForAll
+#else
+    #define _ALS_GameTextForAll
+#endif
+
+#define GameTextForAll __language_GameTextForAll
+
+// I'm still figuring out how to make dialog language available if you find any bug report as soon as possible
+
+stock __language_ShowPlayerDialog(playerid, dialogid, DIALOG_STYLE: style, const caption[], const info[], const button1[], const button2[])
 {
     new Language: lang = Language_gsPlayer[playerid];
     new 
         dialog_caption[60],
-        dialog_info[4096],
-        dialog_button1[20],
-        dialog_button2[20];
+        dialog_info[3800],
+        dialog_button1[30],
+        dialog_button2[30];
 
     //caption
     if(map_has_str_key(Language_gsMap[_:lang], caption))
@@ -228,5 +295,13 @@ hook function ShowPlayerDialog(playerid, dialogid, DIALOG_STYLE: style, const ca
         strcopy(dialog_button2, button2);
     }
 
-    return continue(playerid, dialogid, style, dialog_caption, dialog_info, dialog_button1, dialog_button2);
-}*/
+    return ShowPlayerDialog(playerid, dialogid, style, dialog_caption, dialog_info, dialog_button1, dialog_button2);
+}
+
+#if defined _ALS_ShowPlayerDialog
+    #undef ShowPlayerDialog
+#else
+    #define _ALS_ShowPlayerDialog
+#endif
+
+#define ShowPlayerDialog __language_ShowPlayerDialog

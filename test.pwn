@@ -33,6 +33,9 @@ public OnPlayerSpawn(playerid)
 	SendClientMessage(playerid, -1, "Testiramo scm %d %s", 0, ReturnPlayerName(playerid));
 	SendClientMessage(playerid, -1, "TESTKEY", 33);
 
+	SendClientMessageToAll(-1, "SCMTA test %d", 33);
+	SendClientMessageToAll(-1, "");
+
 	SendPlayerMessageToPlayer(playerid, playerid, "testiramo spmp");
 	SendPlayerMessageToPlayer(playerid, playerid, "INFO");
 
@@ -48,12 +51,21 @@ public OnPlayerSpawn(playerid)
 
 	GameTextForPlayer(playerid, "BUTTON_YES", 3000, 4);
 
+
+	SendClientMessageToAll(-1, "SCMTA test");
+	SendClientMessageToAll(-1, "BUTTON_YES");
+	for(new i; i < MAX_PLAYERS; i++)
+    {
+		if(IsPlayerConnected(i))
+        SendClientMessage(i, -1, "TESTKEY");
+    }
+
 	new lang[MAX_LANG_NAME];
 	Language_GetName(Language_GetPlayer(playerid), lang);
 	SendClientMessage(playerid, -1, "Player's language is %s", lang);
 
 
-	//ShowPlayerDialog(playerid, 0, DIALOG_STYLE_MSGBOX, "Caption", "INFO", "BUTTON_YES", "BUTTON_YES");
+	ShowPlayerDialog(playerid, 0, DIALOG_STYLE_MSGBOX, "Caption", "INFO", "BUTTON_YES", "BUTTON_YES");
 
 	
 	return 1;
