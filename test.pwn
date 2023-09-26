@@ -54,11 +54,6 @@ public OnPlayerSpawn(playerid)
 
 	SendClientMessageToAll(-1, "SCMTA test");
 	SendClientMessageToAll(-1, "BUTTON_YES");
-	for(new i; i < MAX_PLAYERS; i++)
-    {
-		if(IsPlayerConnected(i))
-        SendClientMessage(i, -1, "TESTKEY");
-    }
 
 	new lang[MAX_LANG_NAME];
 	Language_GetName(Language_GetPlayer(playerid), lang);

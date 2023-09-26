@@ -39,15 +39,17 @@ Language_AddKey(serbian, "INFO", "Ja sam novi mali peder\nvolim vas");
 
 ```
 
-Everytime a `SendClientMessage` was sent with this key as text, it will send the value. This also goes for `GameTextForPlayer`, `SendPlayerMessageToPlayer` and soon, I hope for `ShowPlayerDialog`.
+Everytime a `SendClientMessage` was sent with this key as text, it will send the value. This also goes for `GameTextForPlayer`, `SendPlayerMessageToPlayer`, `ShowPlayerDialog`...
 No new send functions, only hooks.
 Full example:
 ```pawn
-
 public OnPlayerSpawn(playerid)
 {
 	Language_SetPlayer(playerid, serbian);
-	
+	Language_AddKey(serbian, "TESTKEY", "Supak %d");
+	Language_AddKey(serbian, "BUTTON_YES", "Daa");
+	Language_AddKey(serbian, "INFO", "Ja sam novi mali peder\nvolim vas");
+
 	Language_AddKey(english, "TESTKEY", "Ass %d");
 	Language_AddKey(english, "BUTTON_YES", "YES");
 	Language_AddKey(english, "INFO", "I'm small gay\nlove yall");
@@ -55,12 +57,14 @@ public OnPlayerSpawn(playerid)
 	SendClientMessage(playerid, -1, "Testiramo scm %d %s", 0, ReturnPlayerName(playerid));
 	SendClientMessage(playerid, -1, "TESTKEY", 33);
 
+	SendClientMessageToAll(-1, "SCMTA test %d", 33);
+	SendClientMessageToAll(-1, "");
+
 	SendPlayerMessageToPlayer(playerid, playerid, "testiramo spmp");
 	SendPlayerMessageToPlayer(playerid, playerid, "INFO");
 
 	GameTextForPlayer(playerid, "BUTTON_YES", 3000, 4);
 
-    // we are testing english language from here
 	Language_SetPlayer(playerid, english);
 
 	SendClientMessage(playerid, -1, "Testiramo scm %d %s", 0, ReturnPlayerName(playerid));
@@ -71,9 +75,16 @@ public OnPlayerSpawn(playerid)
 
 	GameTextForPlayer(playerid, "BUTTON_YES", 3000, 4);
 
+
+	SendClientMessageToAll(-1, "SCMTA test");
+	SendClientMessageToAll(-1, "BUTTON_YES");
+
 	new lang[MAX_LANG_NAME];
 	Language_GetName(Language_GetPlayer(playerid), lang);
 	SendClientMessage(playerid, -1, "Player's language is %s", lang);
+
+
+	ShowPlayerDialog(playerid, 0, DIALOG_STYLE_MSGBOX, "Caption", "INFO", "BUTTON_YES", "BUTTON_YES");
 
 	
 	return 1;
